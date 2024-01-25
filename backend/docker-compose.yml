@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  database_threewygo:
+    image: postgres
+    container_name: database_threewygo
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: threewygo
+    volumes:
+      - pgdata:/data/postgres
+  app:
+    build: .
+    container_name: threewygo
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/usr/app
+    links:
+      - database_threewygo
+    depends_on:
+      - database_threewygo
+
+volumes:
+  pgdata:
+    driver: local
